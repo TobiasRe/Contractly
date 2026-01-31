@@ -1,6 +1,6 @@
 # Contractly
 
-🇩🇪 A mobile-first PWA for managing personal contracts in Germany
+🇩🇪 A mobile-first PWA for managing personal contracts
 
 [![Built with SvelteKit](https://img.shields.io/badge/Built%20with-SvelteKit-FF3E00?style=flat&logo=svelte)](https://kit.svelte.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -8,7 +8,7 @@
 
 ## ✨ Features
 
-- **50+ German Contract Categories** - Comprehensive presets for Telekommunikation, Versicherungen, Energie, Wohnen, and more
+- **50+ Contract Categories** - Comprehensive presets for tele communication, insurance, energy, rent, and more
 - **Smart Defaults** - Auto-filled cancellation periods and reminders per category
 - **100% Local Data** - All data stays on your device (IndexedDB), never leaves
 - **PWA** - Install as app, works offline
@@ -28,14 +28,6 @@
 - **SheetJS & Papa Parse** for import/export
 - **Vite PWA Plugin**
 
-## Design System
-
-This project follows the [interface-design](https://github.com/Dammyjay93/interface-design) methodology with:
-- Warmth & Trust design direction
-- 8px spacing base
-- Subtle shadows and generous mobile touch targets
-- German-first terminology
-
 ## Development
 
 ```bash
@@ -51,36 +43,6 @@ npm run build
 # Preview production build
 npm run preview
 ```
-
-## Deployment
-
-Deploy to Vercel or GitHub Pages:
-
-**Vercel:**
-```bash
-vercel
-```
-
-**GitHub Pages:**
-```bash
-npm run build
-# Deploy the /build folder
-```
-
-## Category Groups
-
-- 📱 Telekommunikation (4 categories)
-- 🛡️ Versicherungen (10 categories)
-- ⚡ Energie & Versorgung (4 categories)
-- 🏠 Wohnen (4 categories)
-- 🎬 Medien & Abos (6 categories)
-- 💻 Software & Cloud (3 categories)
-- 💪 Fitness & Gesundheit (4 categories)
-- 🚊 Mobilität (7 categories)
-- 💳 Finanzprodukte (5 categories)
-- 📺 Öffentliche Beiträge (3 categories)
-- 🤝 Mitgliedschaften (4 categories)
-- ➕ Sonstiges (5 categories)
 
 ## 📚 Documentation
 
@@ -141,15 +103,6 @@ npm run preview
 - **SheetJS** - Excel export
 - **Vite PWA** - Progressive Web App
 
-## 🎨 Design
-
-Follows [interface-design](https://github.com/Dammyjay93/interface-design) methodology:
-- Warmth & Trust direction
-- 8px spacing base
-- Subtle shadows
-- German-first terminology
-- Custom design tokens in `.interface-design/system.md`
-
 ## 📦 Project Stats
 
 - **26 source files** (Svelte + TypeScript)
@@ -165,21 +118,6 @@ Follows [interface-design](https://github.com/Dammyjay93/interface-design) metho
 2. Test PWA installation on mobile devices
 3. Verify notifications work (requires HTTPS)
 4. Test import/export features
-
-## 🚀 Deployment
-
-**Vercel (Recommended):**
-```bash
-vercel
-```
-
-**GitHub Pages:**
-Enable in repo settings. The included workflow will auto-deploy.
-
-**Other Hosts:**
-Deploy the `/build` folder to any static hosting service.
-
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
 ## 🌍 Browser Support
 
@@ -205,9 +143,3 @@ The `npm audit` reports 10 vulnerabilities, but these are **development-only iss
 ## 📄 License
 
 MIT
-
-## 🙏 Acknowledgments
-
-- Design methodology: [interface-design](https://github.com/Dammyjay93/interface-design)
-- Contract categories tailored for German market
-- Built with ❤️ for managing personal contracts
