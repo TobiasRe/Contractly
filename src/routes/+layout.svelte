@@ -1,13 +1,15 @@
 <script lang="ts">
 	// External imports
 	import { onMount } from 'svelte';
-	import { Home, FileText, BarChart3, Settings } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import { Home, FileText, BarChart3, Settings, Search, Star, Plus } from 'lucide-svelte';
 
 	// Local imports
 	import '../app.css';
 	import { page } from '$app/stores';
 	import { initNotifications } from '$lib/stores/notifications';
-	import { t } from '$lib/stores/i18n';
+	import { t, locale, setLocale } from '$lib/stores/i18n';
+	import { globalSearchQuery } from '$lib/stores/search';
 
 	// Reactive declarations
 	$: navItems = [
@@ -17,6 +19,20 @@
 		{ path: '/settings', icon: Settings, label: $t('nav.settings') }
 	];
 
+	function isActive(path: string, currentPath: string): boolean {
+		if (path === '/') {
+			return currentPath === '/';
+		}
+		return currentPath.startsWith(path);
+	}
+
+	function handleTopSearchSubmit(event: SubmitEvent): void {
+		event.preventDefault();
+		if ($page.url.pathname !== '/contracts') {
+			goto('/contracts');
+		}
+	}
+
 	// Lifecycle
 	onMount(() => {
 		// Initialize notifications check
@@ -24,23 +40,86 @@
 	});
 </script>
 
-<div class="min-h-screen pb-20">
-	<slot />
+<div class="app-frame">
+	<div class="app-shell">
+		<aside class="sidebar-panel hidden md:flex md:flex-col">
+			<div class="brand-row">
+				<Star size={16} class="text-accent" />
+				<span class="font-semibold text-foreground">{$t('app.title')}</span>
+			</div>
+
+			<p class="menu-caption">MENU</p>
+			<nav class="space-y-1.5">
+				{#each navItems as item (item.path)}
+					<a
+						href={item.path}
+						class="sidebar-link {isActive(item.path, $page.url.pathname) ? 'sidebar-link-active' : ''}"
+					>
+						<svelte:component this={item.icon} size={16} />
+						<span>{item.label}</span>
+					</a>
+				{/each}
+			</nav>
+		</aside>
+
+		<section class="workspace-panel">
+			<header class="topbar-panel hidden md:flex">
+				<form class="top-search" on:submit={handleTopSearchSubmit}>
+					<Search size={16} class="text-muted" />
+					<input
+						type="text"
+						bind:value={$globalSearchQuery}
+						placeholder={$t('contract.searchPlaceholder')}
+					/>
+				</form>
+
+				<div class="language-switch" role="group" aria-label="Language switcher">
+					<button
+						type="button"
+						class:active={$locale === 'de'}
+						on:click={() => setLocale('de')}
+					>
+						{$t('settings.german')}
+					</button>
+					<button
+						type="button"
+						class:active={$locale === 'en'}
+						on:click={() => setLocale('en')}
+					>
+						{$t('settings.english')}
+					</button>
+				</div>
+			</header>
+
+			<div class="min-h-screen pb-20 md:pb-6">
+				<slot />
+			</div>
+
+			<a
+				href="/contracts/new"
+				class="floating-add-btn fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg transition-all active:scale-95 md:absolute md:bottom-6 md:right-6"
+			>
+				<Plus size={24} />
+			</a>
+		</section>
+	</div>
 </div>
 
 <!-- Bottom Navigation -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 safe-area-bottom">
-	<div class="flex justify-around items-center h-14">
+<nav class="fixed bottom-0 left-0 right-0 border-t border-slate-200/80 bg-white/95 shadow-subtle backdrop-blur safe-area-bottom md:hidden">
+	<div class="mx-auto flex h-14 max-w-2xl items-center justify-around px-2">
 		{#each navItems as item (item.path)}
 			<a
 				href={item.path}
-				class="flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors {$page.url
-					.pathname === item.path
-					? 'text-accent'
+				class="flex h-[46px] flex-1 items-center justify-center gap-2 rounded-xl px-2 text-sm font-medium transition-colors {isActive(
+					item.path,
+					$page.url.pathname
+				)
+					? 'bg-blue-50 text-accent'
 					: 'text-muted hover:text-secondary'}"
 			>
 				<svelte:component this={item.icon} size={20} />
-				<span class="text-xs font-medium">{item.label}</span>
+				<span class="text-xs">{item.label}</span>
 			</a>
 		{/each}
 	</div>

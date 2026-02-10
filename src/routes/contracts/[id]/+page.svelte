@@ -13,7 +13,7 @@
 	// Local imports
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { db } from '$lib/db';
+	import { deleteContractById, getContractById } from '$lib/db';
 	import { getCategoryConfig, getCategoryName } from '$lib/data/categories';
 	import CategoryIcon from '$lib/components/CategoryIcon.svelte';
 	import StatusBadge from '$lib/components/StatusBadge.svelte';
@@ -38,13 +38,11 @@
 	async function loadContract() {
 		loading = true;
 		try {
-			// Convert string ID from URL to number for Dexie query
-			const id = Number(contractId);
-			if (isNaN(id)) {
+			if (!contractId) {
 				contract = null;
 				return;
 			}
-			const c = await db.contracts.get(id);
+			const c = await getContractById(contractId);
 			contract = c || null;
 		} catch (error) {
 			console.error('Error loading contract:', error);
@@ -55,15 +53,11 @@
 	}
 
 	async function deleteContract() {
-		if (!contract) return;
+		if (!contract || !contractId) return;
 		if (!confirm(`${$t('contract.delete')} "${contract.name}" ${$t('contract.deleteConfirm')}`)) return;
 
 		try {
-			// Convert string ID from URL to number for Dexie query
-			const id = Number(contractId);
-			if (!isNaN(id)) {
-				await db.contracts.delete(id);
-			}
+			await deleteContractById(contractId);
 			goto('/contracts');
 		} catch (error) {
 			console.error('Error deleting contract:', error);

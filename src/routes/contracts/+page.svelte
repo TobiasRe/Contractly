@@ -2,7 +2,7 @@
 	// External imports
 	import { onMount } from 'svelte';
 	import { liveQuery } from 'dexie';
-	import { Plus, Search, FileText } from 'lucide-svelte';
+	import { Plus, Search, FileText, ChevronRight } from 'lucide-svelte';
 
 	// Local imports
 	import { db } from '$lib/db';
@@ -12,6 +12,7 @@
 	import { t, locale, getLocaleCode } from '$lib/stores/i18n';
 	import { formatCurrency } from '$lib/utils/currency';
 	import { currency } from '$lib/stores/currency';
+	import { globalSearchQuery } from '$lib/stores/search';
 
 	// Types
 	import type { Contract } from '$lib/db';
@@ -19,12 +20,13 @@
 	// State
 	let contracts: Contract[] = [];
 	let filteredContracts: Contract[] = [];
-	let searchQuery = '';
 	let selectedCategoryGroup = 'all';
+	let categoryScrollElement: HTMLDivElement | null = null;
+	let showCategoryScrollHint = false;
 
 	// Reactive declarations
 	$: currencyValue = $currency; // Subscribe to currency changes
-	$: if (searchQuery || selectedCategoryGroup) {
+	$: if ($globalSearchQuery || selectedCategoryGroup) {
 		filterContracts();
 	}
 
@@ -32,9 +34,9 @@
 	function filterContracts() {
 		filteredContracts = contracts.filter((c) => {
 			const matchesSearch =
-				searchQuery === '' ||
-				c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				c.provider.toLowerCase().includes(searchQuery.toLowerCase());
+				$globalSearchQuery === '' ||
+				c.name.toLowerCase().includes($globalSearchQuery.toLowerCase()) ||
+				c.provider.toLowerCase().includes($globalSearchQuery.toLowerCase());
 
 			const matchesCategory =
 				selectedCategoryGroup === 'all' ||
@@ -54,6 +56,18 @@
 		}).format(new Date(date));
 	}
 
+	function updateCategoryScrollHint(): void {
+		if (!categoryScrollElement) {
+			showCategoryScrollHint = false;
+			return;
+		}
+
+		const remainingScroll =
+			categoryScrollElement.scrollWidth -
+			(categoryScrollElement.scrollLeft + categoryScrollElement.clientWidth);
+		showCategoryScrollHint = remainingScroll > 2;
+	}
+
 	// Lifecycle
 	onMount(() => {
 		const subscription = liveQuery(() => db.contracts.toArray()).subscribe((result) => {
@@ -61,7 +75,14 @@
 			filterContracts();
 		});
 
-		return () => subscription.unsubscribe();
+		const animationFrameId = requestAnimationFrame(updateCategoryScrollHint);
+		window.addEventListener('resize', updateCategoryScrollHint);
+
+		return () => {
+			subscription.unsubscribe();
+			window.removeEventListener('resize', updateCategoryScrollHint);
+			cancelAnimationFrame(animationFrameId);
+		};
 	});
 
 </script>
@@ -75,37 +96,51 @@
 
 	<!-- Search & Filter -->
 	<div class="space-y-3">
-		<div class="relative">
+		<div class="relative md:hidden">
 			<Search class="absolute left-4 top-3 text-muted" size={20} />
 			<input
 				type="text"
-				bind:value={searchQuery}
+				bind:value={$globalSearchQuery}
 				placeholder={$t('contract.searchPlaceholder')}
 				class="input w-full pl-11"
 			/>
 		</div>
 
-		<div class="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4">
-			<button
-				class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {selectedCategoryGroup ===
-				'all'
-					? 'bg-accent text-white'
-					: 'bg-slate-100 text-foreground'}"
-				on:click={() => (selectedCategoryGroup = 'all')}
+		<div class="relative">
+			<div
+				bind:this={categoryScrollElement}
+				on:scroll={updateCategoryScrollHint}
+				class="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 pr-10 md:mx-0 md:px-0 md:pr-10"
 			>
-				{$t('common.all')}
-			</button>
-			{#each categoryGroups as group (group.id)}
 				<button
 					class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {selectedCategoryGroup ===
-					group.id
+					'all'
 						? 'bg-accent text-white'
 						: 'bg-slate-100 text-foreground'}"
-					on:click={() => (selectedCategoryGroup = group.id)}
+					on:click={() => (selectedCategoryGroup = 'all')}
 				>
-					{getCategoryGroupName(group.id, $t)}
+					{$t('common.all')}
 				</button>
-			{/each}
+				{#each categoryGroups as group (group.id)}
+					<button
+						class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {selectedCategoryGroup ===
+						group.id
+							? 'bg-accent text-white'
+							: 'bg-slate-100 text-foreground'}"
+						on:click={() => (selectedCategoryGroup = group.id)}
+					>
+						{getCategoryGroupName(group.id, $t)}
+					</button>
+				{/each}
+			</div>
+			{#if showCategoryScrollHint}
+				<div
+					class="pointer-events-none absolute right-0 top-0 bottom-2 flex w-12 items-center justify-end bg-gradient-to-l from-slate-100/95 to-transparent pr-2"
+					aria-hidden="true"
+				>
+					<ChevronRight size={16} class="text-muted" />
+				</div>
+			{/if}
 		</div>
 	</div>
 
@@ -120,8 +155,13 @@
 						</div>
 						<div class="flex-1 min-w-0">
 							<h3 class="font-medium text-foreground truncate">{contract.name}</h3>
-							<div class="flex items-center gap-2 mt-1">
-								<p class="text-sm text-secondary">{contract.provider}</p>
+							<div
+								class="mt-1 flex items-center"
+								class:gap-2={Boolean(contract.provider?.trim())}
+							>
+								{#if contract.provider?.trim()}
+									<p class="text-sm text-secondary">{contract.provider}</p>
+								{/if}
 								<StatusBadge status={contract.status || 'aktiv'} size="sm" />
 							</div>
 							{#if contract.cancellationDate}
@@ -146,7 +186,7 @@
 				</a>
 			{/each}
 		</div>
-	{:else if searchQuery || selectedCategoryGroup !== 'all'}
+	{:else if $globalSearchQuery || selectedCategoryGroup !== 'all'}
 		<div class="card text-center py-12">
 			<div class="flex justify-center mb-4">
 				<div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center">
@@ -176,11 +216,4 @@
 		</div>
 	{/if}
 
-	<!-- Floating Add Button -->
-	<a
-		href="/contracts/new"
-		class="fixed bottom-20 right-4 w-14 h-14 bg-accent text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 active:scale-95 transition-all"
-	>
-		<Plus size={24} />
-	</a>
 </div>

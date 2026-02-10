@@ -5,7 +5,7 @@ export type ContractStatus = 'aktiv' | 'gekündigt' | 'beendet';
 export type BillingPeriod = 'monthly' | 'quarterly' | 'half-yearly' | 'yearly';
 
 export interface Contract {
-	id?: string;
+	id?: string | number;
 	name: string;
 	category: CategoryType;
 	subcategory?: string;
@@ -179,14 +179,74 @@ function calculateMonthlyCost(
 	return billingCost / PERIOD_MONTHS[billingPeriod];
 }
 
+function normalizeStringId(id: string): string {
+	return id.trim();
+}
+
+async function updateExistingContract(
+	id: string | number,
+	data: Contract
+): Promise<string | null> {
+	if (typeof id === 'number') {
+		if (isNaN(id)) return null;
+		const updated = await db.contracts.update(id, data);
+		return updated > 0 ? String(id) : null;
+	}
+
+	const normalized = normalizeStringId(id);
+	if (!normalized) return null;
+
+	const numericId = Number(normalized);
+	if (!isNaN(numericId)) {
+		const updatedNumeric = await db.contracts.update(numericId, data);
+		if (updatedNumeric > 0) {
+			return String(numericId);
+		}
+	}
+
+	const updatedString = await db.contracts.update(normalized as never, data);
+	return updatedString > 0 ? normalized : null;
+}
+
 /**
- * Convert contract ID to numeric ID for Dexie
+ * Get contract by route id (supports numeric and string keys)
  */
-function toNumericId(id: string | number | undefined): number | null {
-	if (!id) return null;
-	
-	const numericId = typeof id === 'string' ? Number(id) : id;
-	return isNaN(numericId) ? null : numericId;
+export async function getContractById(id: string): Promise<Contract | undefined> {
+	const normalized = normalizeStringId(id);
+	if (!normalized) return undefined;
+
+	const numericId = Number(normalized);
+	if (!isNaN(numericId)) {
+		const byNumericId = await db.contracts.get(numericId);
+		if (byNumericId) return byNumericId;
+	}
+
+	return db.contracts.get(normalized as never);
+}
+
+/**
+ * Delete contract by route id (supports numeric and string keys)
+ */
+export async function deleteContractById(id: string): Promise<boolean> {
+	const normalized = normalizeStringId(id);
+	if (!normalized) return false;
+
+	const numericId = Number(normalized);
+	if (!isNaN(numericId)) {
+		const byNumericId = await db.contracts.get(numericId);
+		if (byNumericId) {
+			await db.contracts.delete(numericId);
+			return true;
+		}
+	}
+
+	const byStringId = await db.contracts.get(normalized as never);
+	if (byStringId) {
+		await db.contracts.delete(normalized as never);
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -212,10 +272,11 @@ export async function saveContract(contract: Partial<Contract>): Promise<string>
 		status: contract.status || 'aktiv'
 	} as Contract;
 
-	const numericId = toNumericId(contract.id);
-	if (numericId !== null) {
-		await db.contracts.update(numericId, data);
-		return String(contract.id);
+	if (contract.id !== undefined) {
+		const updatedId = await updateExistingContract(contract.id, data);
+		if (updatedId !== null) {
+			return updatedId;
+		}
 	}
 	
 	const id = await db.contracts.add(data);

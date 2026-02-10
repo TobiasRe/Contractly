@@ -189,11 +189,10 @@
 
 				<!-- Provider -->
 				<div class="relative">
-					<label class="block text-sm font-medium mb-2">{$t('contract.providerRequired')}</label>
+					<label class="block text-sm font-medium mb-2">{$t('contract.provider')}</label>
 					<input
 						type="text"
 						bind:value={provider}
-						required
 						class="input w-full"
 						placeholder={$t('contract.providerPlaceholder')}
 						on:focus={updateProviderSuggestions}

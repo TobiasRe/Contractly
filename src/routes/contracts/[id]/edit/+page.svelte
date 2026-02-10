@@ -6,7 +6,7 @@
 	// Local imports
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { db, saveContract } from '$lib/db';
+	import { getContractById, saveContract } from '$lib/db';
 	import { getCategoryName } from '$lib/data/categories';
 	import { getProvidersForCategory } from '$lib/data/providers';
 	import CategoryIcon from '$lib/components/CategoryIcon.svelte';
@@ -62,14 +62,8 @@
 		saving = true;
 		errorMessage = '';
 		try {
-			const id = parseInt(contractId);
-			if (isNaN(id)) {
-				errorMessage = $t('contract.errorSaving');
-				saving = false;
-				return;
-			}
-			await saveContract({
-				id: id.toString(),
+			const savedId = await saveContract({
+				id: contractId,
 				name,
 				category: selectedCategory,
 				provider,
@@ -86,7 +80,7 @@
 				createdAt: contract.createdAt
 			});
 
-			goto(`/contracts/${id}`);
+			goto(`/contracts/${savedId}`);
 		} catch (error) {
 			console.error('Error saving contract:', error);
 			errorMessage = $t('contract.errorSaving');
@@ -98,9 +92,8 @@
 	// Lifecycle
 	onMount(async () => {
 		try {
-			// Convert string ID to number for Dexie
-			const id = parseInt(contractId);
-			const c = await db.contracts.get(id);
+			if (!contractId) return;
+			const c = await getContractById(contractId);
 			if (c) {
 				contract = c;
 				// Pre-fill form
@@ -188,11 +181,10 @@
 
 				<!-- Provider -->
 				<div class="relative">
-					<label class="block text-sm font-medium mb-2">{$t('contract.providerRequired')}</label>
+					<label class="block text-sm font-medium mb-2">{$t('contract.provider')}</label>
 					<input
 						type="text"
 						bind:value={provider}
-						required
 						class="input w-full"
 						placeholder={$t('contract.providerPlaceholder')}
 						on:focus={updateProviderSuggestions}
