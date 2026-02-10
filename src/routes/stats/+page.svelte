@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { liveQuery } from 'dexie';
 	import { TrendingUp, Calendar, Plus } from 'lucide-svelte';
+	import { base } from '$app/paths';
 
 	// Local imports
 	import { db } from '$lib/db';
@@ -31,6 +32,11 @@
 	let selectedYear = currentYear;
 	let yearTotal = 0;
 	let availableYears: number[] = [];
+
+	function withBase(path: string): string {
+		if (path === '/') return base || '/';
+		return `${base}${path}`;
+	}
 
 	// Reactive declarations
 	$: currentCurrency = $currency;
@@ -284,7 +290,7 @@
 			<h2 class="text-lg font-semibold mb-3">{$t('stats.topExpensive')}</h2>
 			<div class="space-y-2">
 				{#each topContracts as contract (contract.id)}
-					<a href="/contracts/{contract.id}" class="card flex items-center gap-4 hover:shadow-lg transition-shadow">
+					<a href={withBase(`/contracts/${contract.id}`)} class="card flex items-center gap-4 hover:shadow-lg transition-shadow">
 						<div class="flex items-center justify-center w-8 h-8 rounded-full bg-accent text-white text-sm font-semibold">
 							{topContracts.indexOf(contract) + 1}
 						</div>
@@ -312,7 +318,7 @@
 			</h2>
 			<div class="space-y-2">
 				{#each upcomingDeadlines as contract (contract.id)}
-					<a href="/contracts/{contract.id}" class="card hover:shadow-lg transition-shadow">
+					<a href={withBase(`/contracts/${contract.id}`)} class="card hover:shadow-lg transition-shadow">
 						<div class="flex justify-between items-start">
 							<div class="flex items-center gap-3">
 								<CategoryIcon category={contract.category} size="sm" />
@@ -348,7 +354,7 @@
 			<p class="text-secondary mb-8 max-w-sm mx-auto px-4">
 				{$t('stats.noStatsDesc')}
 			</p>
-			<a href="/contracts/new" class="btn-primary inline-flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
+			<a href={withBase('/contracts/new')} class="btn-primary inline-flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
 				<Plus size={20} />
 				{$t('contract.add')}
 			</a>

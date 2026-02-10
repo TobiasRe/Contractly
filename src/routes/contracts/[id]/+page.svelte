@@ -13,6 +13,7 @@
 	// Local imports
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { deleteContractById, getContractById } from '$lib/db';
 	import { getCategoryConfig, getCategoryName } from '$lib/data/categories';
 	import CategoryIcon from '$lib/components/CategoryIcon.svelte';
@@ -33,6 +34,11 @@
 	// State
 	let contract: Contract | null = null;
 	let loading = true;
+
+	function withBase(path: string): string {
+		if (path === '/') return base || '/';
+		return `${base}${path}`;
+	}
 
 	// Functions
 	async function loadContract() {
@@ -58,7 +64,7 @@
 
 		try {
 			await deleteContractById(contractId);
-			goto('/contracts');
+			goto(withBase('/contracts'));
 		} catch (error) {
 			console.error('Error deleting contract:', error);
 			alert($t('contract.errorDeleting'));
@@ -103,7 +109,7 @@
 				<p class="text-secondary mb-8 px-4">
 					{$t('contract.notFoundDesc')}
 				</p>
-				<a href="/contracts" class="btn-primary w-full max-w-xs text-center inline-block">
+				<a href={withBase('/contracts')} class="btn-primary w-full max-w-xs text-center inline-block">
 					{$t('contract.backToOverview')}
 				</a>
 			</div>
@@ -114,7 +120,7 @@
 		<!-- Header -->
 		<header class="bg-white border-b border-slate-200 sticky top-0 z-10">
 			<div class="flex items-center gap-4 p-4">
-				<button on:click={() => goto('/contracts')} class="p-2 -ml-2">
+				<button on:click={() => goto(withBase('/contracts'))} class="p-2 -ml-2">
 					<ChevronLeft size={24} />
 				</button>
 				<h1 class="text-xl font-semibold flex-1">{$t('contract.details')}</h1>
@@ -256,7 +262,7 @@
 			</div>
 
 			<!-- Edit Button -->
-			<a href="/contracts/{contract.id}/edit" class="btn-primary w-full flex items-center justify-center gap-2">
+			<a href={withBase(`/contracts/${contract.id}/edit`)} class="btn-primary w-full flex items-center justify-center gap-2">
 				<Edit size={20} />
 				{$t('common.edit')}
 			</a>

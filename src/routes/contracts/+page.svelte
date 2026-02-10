@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { liveQuery } from 'dexie';
 	import { Plus, Search, FileText, ChevronRight } from 'lucide-svelte';
+	import { base } from '$app/paths';
 
 	// Local imports
 	import { db } from '$lib/db';
@@ -23,6 +24,11 @@
 	let selectedCategoryGroup = 'all';
 	let categoryScrollElement: HTMLDivElement | null = null;
 	let showCategoryScrollHint = false;
+
+	function withBase(path: string): string {
+		if (path === '/') return base || '/';
+		return `${base}${path}`;
+	}
 
 	// Reactive declarations
 	$: currencyValue = $currency; // Subscribe to currency changes
@@ -148,7 +154,7 @@
 	{#if filteredContracts.length > 0}
 		<div class="space-y-3 pb-6">
 			{#each filteredContracts as contract (contract.id)}
-				<a href="/contracts/{contract.id}" class="card block hover:shadow-lg transition-shadow">
+				<a href={withBase(`/contracts/${contract.id}`)} class="card block hover:shadow-lg transition-shadow">
 					<div class="flex items-start gap-4">
 						<div class="flex-shrink-0">
 							<CategoryIcon category={contract.category} size="lg" />
@@ -209,7 +215,7 @@
 			<p class="text-secondary mb-8 max-w-sm mx-auto px-4">
 				{$t('contract.noContractsDesc')}
 			</p>
-			<a href="/contracts/new" class="btn-primary inline-flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
+			<a href={withBase('/contracts/new')} class="btn-primary inline-flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
 				<Plus size={20} />
 				{$t('contract.add')}
 			</a>

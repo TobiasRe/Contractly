@@ -2,6 +2,7 @@
 	// External imports
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { Home, FileText, BarChart3, Settings, Search, Star, Plus } from 'lucide-svelte';
 
 	// Local imports
@@ -12,24 +13,42 @@
 	import { globalSearchQuery } from '$lib/stores/search';
 
 	// Reactive declarations
+	function withBase(path: string): string {
+		if (path === '/') return base || '/';
+		return `${base}${path}`;
+	}
+
+	function stripBase(path: string): string {
+		if (base && path.startsWith(base)) {
+			return path.slice(base.length) || '/';
+		}
+		return path || '/';
+	}
+
 	$: navItems = [
-		{ path: '/', icon: Home, label: $t('nav.overview') },
-		{ path: '/contracts', icon: FileText, label: $t('nav.contracts') },
-		{ path: '/stats', icon: BarChart3, label: $t('nav.stats') },
-		{ path: '/settings', icon: Settings, label: $t('nav.settings') }
+		{ path: '/', href: withBase('/'), icon: Home, label: $t('nav.overview') },
+		{
+			path: '/contracts',
+			href: withBase('/contracts'),
+			icon: FileText,
+			label: $t('nav.contracts')
+		},
+		{ path: '/stats', href: withBase('/stats'), icon: BarChart3, label: $t('nav.stats') },
+		{ path: '/settings', href: withBase('/settings'), icon: Settings, label: $t('nav.settings') }
 	];
 
 	function isActive(path: string, currentPath: string): boolean {
+		const normalizedPath = stripBase(currentPath);
 		if (path === '/') {
-			return currentPath === '/';
+			return normalizedPath === '/';
 		}
-		return currentPath.startsWith(path);
+		return normalizedPath.startsWith(path);
 	}
 
 	function handleTopSearchSubmit(event: SubmitEvent): void {
 		event.preventDefault();
-		if ($page.url.pathname !== '/contracts') {
-			goto('/contracts');
+		if (stripBase($page.url.pathname) !== '/contracts') {
+			goto(withBase('/contracts'));
 		}
 	}
 
@@ -52,7 +71,7 @@
 			<nav class="space-y-1.5">
 				{#each navItems as item (item.path)}
 					<a
-						href={item.path}
+						href={item.href}
 						class="sidebar-link {isActive(item.path, $page.url.pathname) ? 'sidebar-link-active' : ''}"
 					>
 						<svelte:component this={item.icon} size={16} />
@@ -96,7 +115,7 @@
 			</div>
 
 			<a
-				href="/contracts/new"
+				href={withBase('/contracts/new')}
 				class="floating-add-btn fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg transition-all active:scale-95 md:absolute md:bottom-6 md:right-6"
 			>
 				<Plus size={24} />
@@ -110,7 +129,7 @@
 	<div class="mx-auto flex h-14 max-w-2xl items-center justify-around px-2">
 		{#each navItems as item (item.path)}
 			<a
-				href={item.path}
+				href={item.href}
 				class="flex h-[46px] flex-1 items-center justify-center gap-2 rounded-xl px-2 text-sm font-medium transition-colors {isActive(
 					item.path,
 					$page.url.pathname

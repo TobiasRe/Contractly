@@ -6,6 +6,7 @@
 	// Local imports
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { getContractById, saveContract } from '$lib/db';
 	import { getCategoryName } from '$lib/data/categories';
 	import { getProvidersForCategory } from '$lib/data/providers';
@@ -40,6 +41,11 @@
 	let saving = false;
 	let showProviderSuggestions = false;
 	let providerSuggestions: string[] = [];
+
+	function withBase(path: string): string {
+		if (path === '/') return base || '/';
+		return `${base}${path}`;
+	}
 
 	// Reactive declarations
 	$: if (provider) updateProviderSuggestions();
@@ -80,7 +86,7 @@
 				createdAt: contract.createdAt
 			});
 
-			goto(`/contracts/${savedId}`);
+			goto(withBase(`/contracts/${savedId}`));
 		} catch (error) {
 			console.error('Error saving contract:', error);
 			errorMessage = $t('contract.errorSaving');
@@ -134,7 +140,7 @@
 				<p class="text-secondary mb-8 px-4">
 					{$t('contract.notFoundDesc')}
 				</p>
-				<a href="/contracts" class="btn-primary w-full max-w-xs text-center inline-block">
+				<a href={withBase('/contracts')} class="btn-primary w-full max-w-xs text-center inline-block">
 					{$t('contract.backToOverview')}
 				</a>
 			</div>
@@ -145,7 +151,7 @@
 		<!-- Header -->
 		<header class="bg-white border-b border-slate-200 sticky top-0 z-10">
 			<div class="flex items-center gap-4 p-4">
-				<button on:click={() => goto(`/contracts/${contractId}`)} class="p-2 -ml-2">
+				<button on:click={() => goto(withBase(`/contracts/${contractId}`))} class="p-2 -ml-2">
 					<ChevronLeft size={24} />
 				</button>
 				<h1 class="text-xl font-semibold flex-1">{$t('contract.edit')}</h1>
@@ -289,7 +295,7 @@
 
 			<!-- Actions -->
 			<div class="flex gap-3 pt-4">
-				<button type="button" on:click={() => goto(`/contracts/${contractId}`)} class="btn-secondary flex-1">
+				<button type="button" on:click={() => goto(withBase(`/contracts/${contractId}`))} class="btn-secondary flex-1">
 					{$t('common.cancel')}
 				</button>
 				<button type="submit" disabled={saving} class="btn-primary flex-1">

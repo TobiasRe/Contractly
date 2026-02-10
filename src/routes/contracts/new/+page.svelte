@@ -4,6 +4,7 @@
 
 	// Local imports
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { saveContract } from '$lib/db';
 	import { categoryGroups, getCategoryConfig, getCategoryName, getCategoryGroupName } from '$lib/data/categories';
 	import { getProvidersForCategory } from '$lib/data/providers';
@@ -35,6 +36,11 @@
 	let saving = false;
 	let showProviderSuggestions = false;
 	let providerSuggestions: string[] = [];
+
+	function withBase(path: string): string {
+		if (path === '/') return base || '/';
+		return `${base}${path}`;
+	}
 
 	// Reactive declarations
 	$: if (provider) updateProviderSuggestions();
@@ -96,7 +102,7 @@
 				notes: notes || undefined
 			});
 
-			goto('/contracts');
+			goto(withBase('/contracts'));
 		} catch (error) {
 			console.error('Error saving contract:', error);
 			alert($t('contract.errorSaving'));
@@ -110,7 +116,7 @@
 	<!-- Header -->
 	<header class="bg-white border-b border-slate-200 sticky top-0 z-10">
 		<div class="flex items-center gap-4 p-4">
-			<button on:click={step === 'category-group' ? () => goto('/contracts') : back} class="p-2 -ml-2">
+			<button on:click={step === 'category-group' ? () => goto(withBase('/contracts')) : back} class="p-2 -ml-2">
 				<ChevronLeft size={24} />
 			</button>
 			<h1 class="text-xl font-semibold flex-1">
@@ -296,7 +302,7 @@
 
 				<!-- Actions -->
 				<div class="flex gap-3 pt-4">
-					<button type="button" on:click={() => goto('/contracts')} class="btn-secondary flex-1">
+					<button type="button" on:click={() => goto(withBase('/contracts'))} class="btn-secondary flex-1">
 						{$t('common.cancel')}
 					</button>
 					<button type="submit" disabled={saving} class="btn-primary flex-1">

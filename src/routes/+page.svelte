@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { Plus, AlertCircle, FileText, Sparkles, FilePlus2, BellRing, Download, ArrowRight } from 'lucide-svelte';
 	import { liveQuery } from 'dexie';
+	import { base } from '$app/paths';
 
 	// Local imports
 	import { db } from '$lib/db';
@@ -20,24 +21,30 @@
 	let contractCount = 0;
 	let upcomingContracts: Contract[] = [];
 	let contractsWithoutDeadline = 0;
+
+	function withBase(path: string): string {
+		if (path === '/') return base || '/';
+		return `${base}${path}`;
+	}
+
 	const onboardingSteps = [
 		{
 			icon: FilePlus2,
 			titleKey: 'dashboard.onboardingStepAddTitle',
 			descriptionKey: 'dashboard.onboardingStepAddDesc',
-			href: '/contracts/new'
+			href: withBase('/contracts/new')
 		},
 		{
 			icon: BellRing,
 			titleKey: 'dashboard.onboardingStepNotifyTitle',
 			descriptionKey: 'dashboard.onboardingStepNotifyDesc',
-			href: '/settings'
+			href: withBase('/settings')
 		},
 		{
 			icon: Download,
 			titleKey: 'dashboard.onboardingStepBackupTitle',
 			descriptionKey: 'dashboard.onboardingStepBackupDesc',
-			href: '/settings'
+			href: withBase('/settings')
 		}
 	];
 
@@ -156,7 +163,7 @@
 			</h2>
 			<div class="space-y-3">
 				{#each upcomingContracts as contract (contract.id)}
-					<a href="/contracts/{contract.id}" class="card deadline-card block">
+					<a href={withBase(`/contracts/${contract.id}`)} class="card deadline-card block">
 						<div class="flex justify-between items-start">
 							<div class="flex-1">
 								<h3 class="font-medium text-foreground">{contract.name}</h3>
@@ -220,7 +227,7 @@
 				{/each}
 			</div>
 
-			<a href="/contracts/new" class="btn-primary inline-flex items-center justify-center gap-2 w-full max-w-xs mx-auto shadow-subtle">
+			<a href={withBase('/contracts/new')} class="btn-primary inline-flex items-center justify-center gap-2 w-full max-w-xs mx-auto shadow-subtle">
 				<Plus size={20} />
 				{$t('dashboard.onboardingPrimaryCta')}
 			</a>
