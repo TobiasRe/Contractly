@@ -130,17 +130,6 @@
 		background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(246, 250, 255, 0.96));
 	}
 
-	.stat-tile-primary::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 2px;
-		background: linear-gradient(90deg, rgba(37, 99, 235, 0.7), rgba(96, 165, 250, 0.28));
-		pointer-events: none;
-	}
-
 	.stat-icon-chip {
 		@apply inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-secondary;
 	}
