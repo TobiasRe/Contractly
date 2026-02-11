@@ -11,8 +11,8 @@ export default defineConfig({
 				name: 'Contractly',
 				short_name: 'Contractly',
 				description: 'Verwalten Sie Ihre Verträge einfach und sicher',
-				theme_color: '#2563eb',
-				background_color: '#ffffff',
+				theme_color: '#ececf0',
+				background_color: '#ececf0',
 				display: 'standalone',
 				icons: [
 					{

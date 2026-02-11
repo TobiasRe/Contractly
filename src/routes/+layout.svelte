@@ -110,13 +110,13 @@
 				</div>
 			</header>
 
-			<div class="min-h-screen pb-20 md:pb-6">
+			<div class="min-h-screen pb-20 md:pb-6 content-safe-bottom">
 				<slot />
 			</div>
 
 			<a
 				href={withBase('/contracts/new')}
-				class="floating-add-btn fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg transition-all active:scale-95 md:absolute md:bottom-6 md:right-6"
+				class="floating-add-btn mobile-fab-offset fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg transition-all active:scale-95 md:absolute md:bottom-6 md:right-6"
 			>
 				<Plus size={24} />
 			</a>
@@ -146,6 +146,24 @@
 
 <style>
 	.safe-area-bottom {
-		padding-bottom: env(safe-area-inset-bottom);
+		padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+	}
+
+	.content-safe-bottom {
+		padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+	}
+
+	.mobile-fab-offset {
+		bottom: calc(5rem + env(safe-area-inset-bottom));
+	}
+
+	@media (min-width: 768px) {
+		.content-safe-bottom {
+			padding-bottom: 1.5rem;
+		}
+
+		.mobile-fab-offset {
+			bottom: 1.5rem;
+		}
 	}
 </style>

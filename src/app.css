@@ -16,6 +16,15 @@
 	input[type='number'] {
 		font-variant-numeric: tabular-nums;
 	}
+
+	/* Prevent iOS Safari focus-zoom on form fields in PWA mode */
+	@media (hover: none) and (pointer: coarse) {
+		input,
+		select,
+		textarea {
+			font-size: 16px;
+		}
+	}
 }
 
 @layer components {
@@ -40,6 +49,13 @@
 
 	.app-frame {
 		@apply mx-auto w-full max-w-[1280px] p-3 md:p-8;
+		padding-top: calc(0.75rem + env(safe-area-inset-top));
+	}
+
+	@media (min-width: 768px) {
+		.app-frame {
+			padding-top: 2rem;
+		}
 	}
 
 	.app-shell {
