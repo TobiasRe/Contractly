@@ -174,37 +174,25 @@
 	<!-- Status Filter -->
 	<div class="flex gap-2 overflow-x-auto pb-2">
 		<button
-			class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {statusFilter ===
-			'all'
-				? 'bg-accent text-white'
-				: 'bg-slate-100 text-foreground'}"
+			class="glass-toggle {statusFilter === 'all' ? 'glass-toggle-active' : 'text-foreground'}"
 			on:click={() => (statusFilter = 'all')}
 		>
 			{$t('common.all')}
 		</button>
 		<button
-			class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {statusFilter ===
-			'aktiv'
-				? 'bg-accent text-white'
-				: 'bg-slate-100 text-foreground'}"
+			class="glass-toggle {statusFilter === 'aktiv' ? 'glass-toggle-active' : 'text-foreground'}"
 			on:click={() => (statusFilter = 'aktiv')}
 		>
 			{$t('contract.statusAktiv')}
 		</button>
 		<button
-			class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {statusFilter ===
-			'gekündigt'
-				? 'bg-accent text-white'
-				: 'bg-slate-100 text-foreground'}"
+			class="glass-toggle {statusFilter === 'gekündigt' ? 'glass-toggle-active' : 'text-foreground'}"
 			on:click={() => (statusFilter = 'gekündigt')}
 		>
 			{$t('contract.statusGekündigt')}
 		</button>
 		<button
-			class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {statusFilter ===
-			'beendet'
-				? 'bg-accent text-white'
-				: 'bg-slate-100 text-foreground'}"
+			class="glass-toggle {statusFilter === 'beendet' ? 'glass-toggle-active' : 'text-foreground'}"
 			on:click={() => (statusFilter = 'beendet')}
 		>
 			{$t('contract.statusBeendet')}
@@ -240,16 +228,14 @@
 			<div class="flex gap-2 overflow-x-auto pb-2 mb-4">
 				{#each availableYears as year (year)}
 					<button
-						class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {selectedYear === year
-							? 'bg-accent text-white'
-							: 'bg-slate-100 text-foreground'}"
+						class="glass-toggle {selectedYear === year ? 'glass-toggle-active' : 'text-foreground'}"
 						on:click={() => (selectedYear = year)}
 					>
 						{year}
 					</button>
 				{/each}
 			</div>
-			<div class="card bg-slate-50">
+			<div class="card bg-white/30">
 				<div class="flex items-center gap-2 text-muted mb-2">
 					<CurrencyIcon size={16} />
 					<span class="text-sm">{$t('stats.totalForYear')} {selectedYear}</span>
@@ -344,9 +330,9 @@
 	{/if}
 
 	{#if contracts.length === 0}
-		<div class="card text-center py-12 mt-8">
+				<div class="card mt-8 py-12 text-center">
 			<div class="flex justify-center mb-6">
-				<div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center">
+				<div class="flex h-20 w-20 items-center justify-center rounded-full border border-white/60 bg-white/55 backdrop-blur-md">
 					<TrendingUp size={40} class="text-muted" />
 				</div>
 			</div>

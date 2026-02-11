@@ -157,17 +157,13 @@
 		</div>
 		<div class="flex gap-2">
 			<button
-				class="px-4 py-2 rounded-lg font-medium {language === 'de'
-					? 'bg-accent text-white'
-					: 'bg-slate-100 text-foreground'}"
+				class="glass-toggle {language === 'de' ? 'glass-toggle-active' : 'text-foreground'}"
 				on:click={() => changeLanguage('de')}
 			>
 				{$t('settings.german')}
 			</button>
 			<button
-				class="px-4 py-2 rounded-lg font-medium {language === 'en'
-					? 'bg-accent text-white'
-					: 'bg-slate-100 text-foreground'}"
+				class="glass-toggle {language === 'en' ? 'glass-toggle-active' : 'text-foreground'}"
 				on:click={() => changeLanguage('en')}
 			>
 				{$t('settings.english')}

@@ -125,7 +125,7 @@
 </div>
 
 <!-- Bottom Navigation -->
-<nav class="fixed bottom-0 left-0 right-0 border-t border-slate-200/80 bg-white/95 shadow-subtle backdrop-blur safe-area-bottom md:hidden">
+<nav class="safe-area-bottom fixed bottom-0 left-0 right-0 border-t border-white/60 bg-white/45 shadow-subtle backdrop-blur-xl md:hidden">
 	<div class="mx-auto flex h-14 max-w-2xl items-center justify-around px-2">
 		{#each navItems as item (item.path)}
 			<a
@@ -134,8 +134,8 @@
 					item.path,
 					$page.url.pathname
 				)
-					? 'bg-blue-50 text-accent'
-					: 'text-muted hover:text-secondary'}"
+					? 'bg-white/65 text-accent'
+					: 'text-muted hover:bg-white/35 hover:text-secondary'}"
 			>
 				<svelte:component this={item.icon} size={20} />
 				<span class="text-xs">{item.label}</span>

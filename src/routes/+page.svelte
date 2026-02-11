@@ -115,7 +115,7 @@
 <div class="dashboard-shell p-4 space-y-6">
 	<!-- Header -->
 	<header class="dashboard-hero pt-4">
-		<div class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold tracking-wide text-accent shadow-subtle">
+		<div class="glass-chip inline-flex items-center gap-2 tracking-wide text-accent shadow-subtle">
 			<Sparkles size={14} />
 			{$t('dashboard.title')}
 		</div>
@@ -199,11 +199,11 @@
 	{#if contractCount === 0}
 		<section class="card onboarding-shell text-center py-10 mt-8 overflow-hidden">
 			<div class="relative">
-				<div class="mx-auto mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-blue-50 text-accent ring-8 ring-white/70">
+				<div class="mx-auto mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full border border-white/60 bg-white/60 text-accent ring-8 ring-white/40 backdrop-blur-md">
 					<Sparkles size={38} />
 				</div>
-				<div class="pointer-events-none absolute -left-16 -top-8 h-32 w-32 rounded-full bg-blue-100/60 blur-2xl"></div>
-				<div class="pointer-events-none absolute -right-20 top-10 h-36 w-36 rounded-full bg-amber-100/70 blur-2xl"></div>
+				<div class="pointer-events-none absolute -left-16 -top-8 h-32 w-32 rounded-full bg-violet-200/50 blur-2xl"></div>
+				<div class="pointer-events-none absolute -right-20 top-10 h-36 w-36 rounded-full bg-blue-200/55 blur-2xl"></div>
 			</div>
 			<h3 class="text-xl font-semibold mb-2">{$t('dashboard.onboardingTitle')}</h3>
 			<p class="text-secondary mb-6 max-w-sm mx-auto px-2">
@@ -213,7 +213,7 @@
 			<div class="space-y-3 mb-7 text-left max-w-lg mx-auto">
 				{#each onboardingSteps as step}
 					<a href={step.href} class="onboarding-step group">
-						<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-accent">
+						<div class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/55 bg-white/55 text-accent backdrop-blur-md">
 							<svelte:component this={step.icon} size={18} />
 						</div>
 						<div class="min-w-0">

@@ -40,7 +40,7 @@
 	</div>
 {:else}
 	<div
-		class="rounded-lg flex items-center justify-center bg-slate-100 text-muted {sizeClasses[
+		class="flex items-center justify-center rounded-lg border border-white/60 bg-white/45 text-muted backdrop-blur-md {sizeClasses[
 			size
 		]}"
 	>

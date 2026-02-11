@@ -126,14 +126,14 @@
 </script>
 
 {#if loading}
-	<div class="min-h-screen bg-slate-50 flex items-center justify-center pb-20">
+	<div class="page-shell flex items-center justify-center">
 		<div class="flex flex-col items-center gap-3">
 			<div class="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
 			<div class="text-secondary">{$t('common.loading')}</div>
 		</div>
 	</div>
 {:else if !contract}
-	<div class="min-h-screen bg-slate-50 pb-20">
+	<div class="page-shell">
 		<div class="flex flex-col items-center justify-center min-h-[80vh] p-6">
 			<div class="card max-w-md w-full text-center py-12">
 				<h2 class="text-2xl font-semibold text-foreground mb-3">{$t('contract.notFound')}</h2>
@@ -147,9 +147,9 @@
 		</div>
 	</div>
 {:else}
-	<div class="min-h-screen bg-slate-50">
+	<div class="page-shell">
 		<!-- Header -->
-		<header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+		<header class="glass-header">
 			<div class="flex items-center gap-4 p-4">
 				<button on:click={() => goto(withBase(`/contracts/${contractId}`))} class="p-2 -ml-2">
 					<ChevronLeft size={24} />
@@ -161,7 +161,7 @@
 		<form on:submit|preventDefault={handleSubmit} class="p-4 pb-24 space-y-6">
 			<!-- Error Message -->
 			{#if errorMessage}
-				<div class="card bg-red-50 border border-error">
+				<div class="card border border-error/60 bg-red-100/35">
 					<p class="text-error text-sm">{errorMessage}</p>
 				</div>
 			{/if}
@@ -196,11 +196,11 @@
 						on:focus={updateProviderSuggestions}
 					/>
 					{#if showProviderSuggestions}
-						<div class="absolute z-10 w-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 max-h-48 overflow-y-auto">
+						<div class="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-xl border border-white/60 bg-white/70 shadow-card backdrop-blur-lg">
 							{#each providerSuggestions.filter((p) => p.toLowerCase().includes(provider.toLowerCase())) as suggestion (suggestion)}
 								<button
 									type="button"
-									class="block w-full text-left px-4 py-2 hover:bg-slate-50"
+									class="block w-full px-4 py-2 text-left hover:bg-white/60"
 									on:click={() => selectProvider(suggestion)}
 								>
 									{suggestion}

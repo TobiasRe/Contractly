@@ -112,9 +112,9 @@
 	}
 </script>
 
-<div class="min-h-screen bg-slate-50">
+<div class="page-shell">
 	<!-- Header -->
-	<header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+	<header class="glass-header">
 		<div class="flex items-center gap-4 p-4">
 			<button on:click={step === 'category-group' ? () => goto(withBase('/contracts')) : back} class="p-2 -ml-2">
 				<ChevronLeft size={24} />
@@ -204,11 +204,11 @@
 						on:focus={updateProviderSuggestions}
 					/>
 					{#if showProviderSuggestions}
-						<div class="absolute z-10 w-full mt-1 bg-white rounded-lg shadow-lg border border-slate-200 max-h-48 overflow-y-auto">
+						<div class="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-xl border border-white/60 bg-white/70 shadow-card backdrop-blur-lg">
 							{#each providerSuggestions.filter((p) => p.toLowerCase().includes(provider.toLowerCase())) as suggestion (suggestion)}
 								<button
 									type="button"
-									class="block w-full text-left px-4 py-2 hover:bg-slate-50"
+									class="block w-full px-4 py-2 text-left hover:bg-white/60"
 									on:click={() => selectProvider(suggestion)}
 								>
 									{suggestion}

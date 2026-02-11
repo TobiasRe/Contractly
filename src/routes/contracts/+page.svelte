@@ -119,20 +119,18 @@
 				class="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 pr-10 md:mx-0 md:px-0 md:pr-10"
 			>
 				<button
-					class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {selectedCategoryGroup ===
-					'all'
-						? 'bg-accent text-white'
-						: 'bg-slate-100 text-foreground'}"
+					class="glass-toggle {selectedCategoryGroup === 'all'
+						? 'glass-toggle-active'
+						: 'text-foreground'}"
 					on:click={() => (selectedCategoryGroup = 'all')}
 				>
 					{$t('common.all')}
 				</button>
 				{#each categoryGroups as group (group.id)}
 					<button
-						class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors {selectedCategoryGroup ===
-						group.id
-							? 'bg-accent text-white'
-							: 'bg-slate-100 text-foreground'}"
+						class="glass-toggle {selectedCategoryGroup === group.id
+							? 'glass-toggle-active'
+							: 'text-foreground'}"
 						on:click={() => (selectedCategoryGroup = group.id)}
 					>
 						{getCategoryGroupName(group.id, $t)}
@@ -141,7 +139,7 @@
 			</div>
 			{#if showCategoryScrollHint}
 				<div
-					class="pointer-events-none absolute right-0 top-0 bottom-2 flex w-12 items-center justify-end bg-gradient-to-l from-slate-100/95 to-transparent pr-2"
+					class="pointer-events-none absolute right-0 top-0 bottom-2 flex w-12 items-center justify-end bg-gradient-to-l from-white/70 to-transparent pr-2"
 					aria-hidden="true"
 				>
 					<ChevronRight size={16} class="text-muted" />
@@ -193,9 +191,9 @@
 			{/each}
 		</div>
 	{:else if $globalSearchQuery || selectedCategoryGroup !== 'all'}
-		<div class="card text-center py-12">
+		<div class="card py-12 text-center">
 			<div class="flex justify-center mb-4">
-				<div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center">
+				<div class="flex h-16 w-16 items-center justify-center rounded-full border border-white/60 bg-white/55 backdrop-blur-md">
 					<Search size={32} class="text-muted" />
 				</div>
 			</div>
@@ -205,9 +203,9 @@
 			</p>
 		</div>
 	{:else}
-		<div class="card text-center py-12 mt-8">
+		<div class="card mt-8 py-12 text-center">
 			<div class="flex justify-center mb-6">
-				<div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center">
+				<div class="flex h-20 w-20 items-center justify-center rounded-full border border-white/60 bg-white/55 backdrop-blur-md">
 					<FileText size={40} class="text-muted" />
 				</div>
 			</div>

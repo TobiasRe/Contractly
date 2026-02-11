@@ -90,18 +90,18 @@
 </script>
 
 {#if loading}
-	<div class="min-h-screen bg-slate-50 flex items-center justify-center pb-20">
+	<div class="page-shell flex items-center justify-center">
 		<div class="flex flex-col items-center gap-3">
 			<div class="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
 			<div class="text-secondary">{$t('common.loading')}</div>
 		</div>
 	</div>
 {:else if !contract}
-	<div class="min-h-screen bg-slate-50 pb-20">
+	<div class="page-shell">
 		<div class="flex flex-col items-center justify-center min-h-[80vh] p-6">
 			<div class="card max-w-md w-full text-center py-12">
 				<div class="flex justify-center mb-6">
-					<div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center">
+					<div class="flex h-20 w-20 items-center justify-center rounded-full border border-white/60 bg-white/55 backdrop-blur-md">
 						<FileText size={40} class="text-muted" />
 					</div>
 				</div>
@@ -116,9 +116,9 @@
 		</div>
 	</div>
 {:else}
-	<div class="min-h-screen bg-slate-50">
+	<div class="page-shell">
 		<!-- Header -->
-		<header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+		<header class="glass-header">
 			<div class="flex items-center gap-4 p-4">
 				<button on:click={() => goto(withBase('/contracts'))} class="p-2 -ml-2">
 					<ChevronLeft size={24} />
@@ -177,8 +177,8 @@
 				{#if daysUntil > 0 && daysUntil <= 90}
 					<div
 						class="card border-2 {daysUntil <= 30
-							? 'border-error bg-red-50'
-							: 'border-warning bg-amber-50'}"
+							? 'border-error/60 bg-red-100/35'
+							: 'border-warning/60 bg-amber-100/35'}"
 					>
 						<div class="flex items-start gap-3">
 							<AlertCircle

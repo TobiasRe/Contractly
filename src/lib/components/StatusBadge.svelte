@@ -5,18 +5,21 @@
 	export let status: ContractStatus;
 	export let size: 'sm' | 'md' = 'md';
 
-	const statusConfig: Record<ContractStatus, { color: string; bgColor: string }> = {
+	const statusConfig: Record<ContractStatus, { color: string; bgColor: string; borderColor: string }> = {
 		aktiv: {
 			color: 'text-success',
-			bgColor: 'bg-green-50'
+			bgColor: 'bg-green-100/35',
+			borderColor: 'border-green-100/60'
 		},
 		gekündigt: {
 			color: 'text-warning',
-			bgColor: 'bg-amber-50'
+			bgColor: 'bg-amber-100/35',
+			borderColor: 'border-amber-100/60'
 		},
 		beendet: {
 			color: 'text-muted',
-			bgColor: 'bg-slate-100'
+			bgColor: 'bg-white/40',
+			borderColor: 'border-white/60'
 		}
 	};
 
@@ -32,7 +35,7 @@
 </script>
 
 <span
-	class="inline-flex items-center rounded-full font-medium {config.color} {config.bgColor} {sizeClasses}"
+	class="inline-flex items-center rounded-full border font-medium backdrop-blur-md {config.color} {config.bgColor} {config.borderColor} {sizeClasses}"
 >
 	{$t(label)}
 </span>

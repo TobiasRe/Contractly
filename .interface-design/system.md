@@ -2,9 +2,9 @@
 
 ## Direction
 
-**Personality:** Warmth & Trust
-**Foundation:** Warm neutrals with blue accents
-**Depth:** Subtle shadows (soft lift)
+**Personality:** Soft SaaS + Calm Precision
+**Foundation:** Lavender-to-blue gradient with glass surfaces
+**Depth:** Frosted glass layering (blur + translucent borders)
 
 ## Tokens
 
@@ -14,19 +14,19 @@ Scale: 8, 12, 16, 24, 32, 48
 
 ### Colors
 ```
---foreground: slate-800
---secondary: slate-600
---muted: slate-400
---faint: slate-200
+--foreground: #1f2140
+--secondary: #4d547f
+--muted: #7d84b0
+--faint: #d9def4
 
---accent: blue-600
+--accent: #7282ff
 --success: green-600
---warning: amber-600
+--warning: #d18635
 --error: red-600
 
---surface-base: warm-white-50
---surface-elevated: white
---background: slate-50
+--surface-base: rgba(255, 255, 255, 0.34)
+--surface-elevated: rgba(255, 255, 255, 0.62)
+--background: lavender-to-blue gradient
 ```
 
 ### Radius
@@ -40,8 +40,8 @@ Numbers: tabular-nums (for costs)
 
 ### Shadows
 ```
---shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06)
---shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04)
+--shadow-subtle: 0 10px 20px -16px rgba(72, 86, 196, 0.42), 0 2px 5px rgba(43, 56, 155, 0.12)
+--shadow-card: 0 18px 28px -22px rgba(72, 86, 196, 0.52), 0 4px 9px rgba(43, 56, 155, 0.12)
 ```
 
 ## Patterns
@@ -49,8 +49,8 @@ Numbers: tabular-nums (for costs)
 ### Contract Card
 - Padding: 20px
 - Radius: 12px
-- Background: white with subtle shadow
-- Border: none (shadow provides depth)
+- Background: translucent white (glass)
+- Border: 1px translucent white edge
 - Usage: Display contract information with cost emphasis
 
 ### Button Primary
@@ -58,21 +58,21 @@ Numbers: tabular-nums (for costs)
 - Padding: 12px 24px
 - Radius: 12px
 - Font: 16px, 500 weight
-- Background: blue-600
+- Background: lavender-blue gradient
 - Usage: Primary actions (save, add contract)
 
 ### Input Field
 - Height: 48px
 - Padding: 12px 16px
-- Radius: 8px
-- Border: 1px solid slate-300
+- Radius: 12px
+- Border: 1px translucent white edge
 - Font: 16px (prevents zoom on iOS)
 - Usage: All form inputs
 
 ### Bottom Navigation
 - Height: 56px
-- Background: white with shadow
-- Active indicator: blue-600 with icon + label
+- Background: frosted glass with blur
+- Active indicator: glass chip with accent text
 - Touch target: 48px minimum
 
 ### Category Badge
@@ -86,8 +86,8 @@ Numbers: tabular-nums (for costs)
 
 | Decision | Rationale | Date |
 |----------|-----------|------|
-| Warm neutrals + blue | Trust (banking blue) + approachable (warm grays) fit German financial context | 2026-01-30 |
+| Lavender-blue glass palette | Matches soft SaaS aesthetic and iOS Liquid Glass language | 2026-02-11 |
 | 8px spacing base | Divisible for mobile (48px touch targets = 6 units) | 2026-01-30 |
-| Subtle shadows | Soft lift without heaviness, approachable feel | 2026-01-30 |
+| Frosted glass depth | Quiet layering with translucency and blur instead of opaque blocks | 2026-02-11 |
 | 48px touch targets | Thumb-friendly for mobile-first German users | 2026-01-30 |
 | Inter font | Clear, trustworthy, excellent German character support | 2026-01-30 |
