@@ -113,14 +113,18 @@
 			<div class="min-h-screen pb-20 md:pb-6 content-safe-bottom">
 				<slot />
 			</div>
+		</section>
+	</div>
 
+	<div class="pointer-events-none fixed bottom-0 left-0 right-0 z-40 md:bottom-8">
+		<div class="mx-auto w-full max-w-[1280px] px-4 md:px-8">
 			<a
 				href={withBase('/contracts/new')}
-				class="floating-add-btn mobile-fab-offset fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg transition-all active:scale-95 md:absolute md:bottom-6 md:right-6"
+				class="floating-add-btn mobile-fab-offset pointer-events-auto absolute right-4 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg transition-all active:scale-95 md:right-[2.75rem]"
 			>
 				<Plus size={24} />
 			</a>
-		</section>
+		</div>
 	</div>
 </div>
 
