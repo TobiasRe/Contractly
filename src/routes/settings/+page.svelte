@@ -230,11 +230,11 @@
 			{$t('settings.exportDescription')}
 		</p>
 		<div class="space-y-2">
-			<button on:click={handleExportCSV} class="btn-secondary w-full flex items-center gap-2">
+			<button on:click={handleExportCSV} class="btn-secondary w-full flex items-center justify-center gap-2">
 				<FileText size={18} />
 				{$t('settings.exportCSV')}
 			</button>
-			<button on:click={handleExportXLSX} class="btn-secondary w-full flex items-center gap-2">
+			<button on:click={handleExportXLSX} class="btn-secondary w-full flex items-center justify-center gap-2">
 				<FileSpreadsheet size={18} />
 				{$t('settings.exportXLSX')}
 			</button>
@@ -299,7 +299,7 @@
 			{$t('settings.backupDescription')}
 		</p>
 		<div class="space-y-2">
-			<button on:click={handleBackup} class="btn-secondary w-full flex items-center gap-2">
+			<button on:click={handleBackup} class="btn-secondary w-full flex items-center justify-center gap-2">
 				<Download size={18} />
 				{$t('settings.backupData')}
 			</button>
