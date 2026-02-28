@@ -2,6 +2,8 @@
 
 **A privacy-first contract manager for your subscriptions and recurring bills.**
 
+🚀 **[Live App](https://tobiasre.github.io/Contractly/)**
+
 All data stays on your device — no accounts, no servers, no tracking. Built as a PWA so it works offline and installs like a native app.
 
 [![SvelteKit](https://img.shields.io/badge/SvelteKit-FF3E00?style=flat&logo=svelte&logoColor=white)](https://kit.svelte.dev)
