@@ -11,6 +11,18 @@ All data stays on your device — no accounts, no servers, no tracking. Built as
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-06B6D4?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat)](LICENSE)
 
+<br/>
+
+<div align="center">
+  <img src="static/screenshots/dashboard.png" width="30%" alt="Dashboard" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="static/screenshots/contract.png" width="30%" alt="Contract Details" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="static/screenshots/stats.png" width="30%" alt="Statistics" />
+</div>
+
+<br/>
+
 ---
 
 ## Features
